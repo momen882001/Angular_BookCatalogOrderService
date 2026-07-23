@@ -1,0 +1,17 @@
+@import 'tailwindcss';
+
+@theme {
+  --font-brand: 'Fraunces', Georgia, serif;
+  --font-sans: 'DM Sans', system-ui, sans-serif;
+
+  --color-app-bg: #f0f4f8;
+  --color-app-text: #142033;
+  --color-app-muted: #5a6b7d;
+  --color-app-border: #d5dee8;
+  --color-app-card: #ffffff;
+  --color-app-hero-from: #0c1a2e;
+  --color-app-hero-to: #1a3a5c;
+  --color-app-accent: #c45c26;
+  --color-app-primary: #1a4d7c;
+  --color-app-on-primary: #ffffff;
+}

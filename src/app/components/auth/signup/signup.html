@@ -1,0 +1,143 @@
+<section class="signup-page fade-in">
+  <aside class="signup-hero">
+    <div class="signup-hero__glow" aria-hidden="true"></div>
+    <div class="signup-hero__content">
+      <p class="signup-hero__brand">BookCatalog</p>
+      <h1 class="signup-hero__headline">Start your collection.</h1>
+      <p class="signup-hero__lede">
+        Create an account to browse titles, place orders, and keep your catalog in sync.
+      </p>
+    </div>
+  </aside>
+
+  <div class="signup-panel">
+    <div class="signup-panel__inner">
+      <header class="signup-panel__header">
+        <p class="signup-panel__brand md:hidden">BookCatalog</p>
+        <h2 class="signup-panel__title">Create account</h2>
+        <p class="signup-panel__subtitle">Fill in your details to get started.</p>
+      </header>
+
+      <form class="signup-form" [formGroup]="signupForm" (ngSubmit)="onSubmit()" novalidate>
+        @if (formError(); as error) {
+          <div class="signup-form__alert" role="alert">
+            <mat-icon aria-hidden="true">info</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        <div class="signup-form__row">
+          <mat-form-field appearance="outline" class="signup-form__field">
+            <mat-label>First name</mat-label>
+            <input
+              matInput
+              formControlName="firstname"
+              autocomplete="given-name"
+              [attr.aria-invalid]="!!firstnameError()"
+            />
+            <mat-icon matPrefix>badge</mat-icon>
+            @if (firstnameError(); as message) {
+              <mat-error>{{ message }}</mat-error>
+            }
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="signup-form__field">
+            <mat-label>Last name</mat-label>
+            <input
+              matInput
+              formControlName="lastname"
+              autocomplete="family-name"
+              [attr.aria-invalid]="!!lastnameError()"
+            />
+            <mat-icon matPrefix>badge</mat-icon>
+            @if (lastnameError(); as message) {
+              <mat-error>{{ message }}</mat-error>
+            }
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="signup-form__field w-full">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            autocomplete="username"
+            [attr.aria-invalid]="!!usernameError()"
+          />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (usernameError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="signup-form__field w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="passwordType()"
+            autocomplete="new-password"
+            [attr.aria-invalid]="!!passwordError()"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="passwordToggleLabel()"
+          >
+            <mat-icon>{{ passwordToggleIcon() }}</mat-icon>
+          </button>
+          @if (passwordError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="signup-form__field w-full">
+          <mat-label>Confirm password</mat-label>
+          <input
+            matInput
+            formControlName="confirmPassword"
+            [type]="confirmPasswordType()"
+            autocomplete="new-password"
+            [attr.aria-invalid]="!!confirmPasswordError()"
+          />
+          <mat-icon matPrefix>lock_outline</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="toggleConfirmPasswordVisibility()"
+            [attr.aria-label]="confirmPasswordToggleLabel()"
+          >
+            <mat-icon>{{ confirmPasswordToggleIcon() }}</mat-icon>
+          </button>
+          @if (confirmPasswordError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="signup-form__submit"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <mat-spinner diameter="20" aria-label="Creating account"></mat-spinner>
+            <span>Creating account…</span>
+          } @else {
+            <span>Create account</span>
+          }
+        </button>
+      </form>
+
+      <p class="signup-panel__footer">
+        Already have an account?
+        <a routerLink="/auth/login" class="signup-panel__link">Sign in</a>
+      </p>
+    </div>
+  </div>
+</section>

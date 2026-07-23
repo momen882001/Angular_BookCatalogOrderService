@@ -1,0 +1,89 @@
+<section class="login-page fade-in">
+  <aside class="login-hero" aria-hidden="false">
+    <div class="login-hero__glow" aria-hidden="true"></div>
+    <div class="login-hero__content">
+      <p class="login-hero__brand">BookCatalog</p>
+      <h1 class="login-hero__headline">Your shelf, ordered.</h1>
+      <p class="login-hero__lede">
+        Browse titles, place orders, and keep your catalog moving — all in one place.
+      </p>
+    </div>
+  </aside>
+
+  <div class="login-panel">
+    <div class="login-panel__inner">
+      <header class="login-panel__header">
+        <p class="login-panel__brand md:hidden">BookCatalog</p>
+        <h2 class="login-panel__title">Welcome back</h2>
+        <p class="login-panel__subtitle">Sign in with your username and password.</p>
+      </header>
+
+      <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+        @if (formError(); as error) {
+          <div class="login-form__alert" role="alert">
+            <mat-icon aria-hidden="true">info</mat-icon>
+            <span>{{ error }}</span>
+          </div>
+        }
+
+        <mat-form-field appearance="outline" class="login-form__field w-full">
+          <mat-label>Username</mat-label>
+          <input
+            matInput
+            formControlName="username"
+            autocomplete="username"
+            [attr.aria-invalid]="!!usernameError()"
+          />
+          <mat-icon matPrefix>person</mat-icon>
+          @if (usernameError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="login-form__field w-full">
+          <mat-label>Password</mat-label>
+          <input
+            matInput
+            formControlName="password"
+            [type]="passwordType()"
+            autocomplete="current-password"
+            [attr.aria-invalid]="!!passwordError()"
+          />
+          <mat-icon matPrefix>lock</mat-icon>
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePasswordVisibility()"
+            [attr.aria-label]="passwordToggleLabel()"
+          >
+            <mat-icon>{{ passwordToggleIcon() }}</mat-icon>
+          </button>
+          @if (passwordError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          class="login-form__submit"
+          [disabled]="isSubmitting()"
+        >
+          @if (isSubmitting()) {
+            <mat-spinner diameter="20" aria-label="Signing in"></mat-spinner>
+            <span>Signing in…</span>
+          } @else {
+            <span>Sign in</span>
+          }
+        </button>
+      </form>
+
+      <p class="login-panel__footer">
+        New here?
+        <a routerLink="/auth/register" class="login-panel__link">Create an account</a>
+      </p>
+    </div>
+  </div>
+</section>
