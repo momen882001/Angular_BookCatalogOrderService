@@ -1,5 +1,5 @@
 import { Routes } from '@angular/router';
-import { Auth } from './auth';
+import { Auth } from './components/auth';
 
 export const AUTH_ROUTES: Routes = [
   {
@@ -13,11 +13,11 @@ export const AUTH_ROUTES: Routes = [
       },
       {
         path: 'login',
-        loadComponent: () => import('./login/login').then((c) => c.Login),
+        loadComponent: () => import('./components/login/login').then((c) => c.Login),
       },
       {
         path: 'register',
-        loadComponent: () => import('./signup/signup').then((c) => c.Signup),
+        loadComponent: () => import('./components/signup/signup').then((c) => c.Signup),
       },
     ],
   },
