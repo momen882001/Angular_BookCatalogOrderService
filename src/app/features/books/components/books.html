@@ -1,0 +1,21 @@
+<section class="page-container fade-in books-page">
+  <header class="books-page__header">
+    <div>
+      <h1 class="page-title">Books</h1>
+      <p class="page-subtitle">Static sample data to exercise the shared generic table.</p>
+    </div>
+  </header>
+
+  <app-generic-table
+    [dataSource]="tableData()"
+    [columns]="columns"
+    [actions]="actions"
+    [isSearchable]="true"
+    [totalItems]="totalItems()"
+    [pageSize]="pageSize()"
+    searchPlaceholder="Search books…"
+    emptyTableMessage="No books match your search."
+    (search)="onSearch($event)"
+    (pageChange)="onPageChange($event)"
+  />
+</section>
