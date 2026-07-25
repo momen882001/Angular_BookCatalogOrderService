@@ -2,8 +2,13 @@
   <header class="books-page__header">
     <div>
       <h1 class="page-title">Books</h1>
-      <!-- <p class="page-subtitle">Static sample data to exercise the shared generic table.</p> -->
     </div>
+
+    <button class="create-book-btn" type="button" (click)="openAddBook()">
+      <i class="bi bi-plus-lg"></i>
+
+      <span> Add Book </span>
+    </button>
   </header>
 
   <app-generic-table

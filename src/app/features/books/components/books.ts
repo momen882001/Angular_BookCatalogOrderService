@@ -6,9 +6,10 @@ import {
 } from '../../../shared/components/generic-table/generic-table';
 import { TableAction, TableColumn } from '../../../shared/interfaces/table-configuration-interface';
 import { BooksService } from '../../../core/services/books.service';
-import { IBookResponse } from '../interfaces/BookInterface';
+import { IBookRequest, IBookResponse } from '../interfaces/BookInterface';
 import { ViewBook } from './view-book/view-book';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AddEditBook } from './add-edit-book/add-edit-book';
 
 @Component({
   selector: 'app-books',
@@ -42,13 +43,13 @@ export class Books implements OnInit {
     {
       icon: 'edit',
       label: 'Edit',
-      handler: (book) => console.log('Edit book', book),
+      handler: (book) => this.editBook(book),
     },
-    {
-      icon: 'delete',
-      label: 'Delete',
-      handler: (book) => console.log('Delete book', book),
-    },
+    // {
+    //   icon: 'delete',
+    //   label: 'Delete',
+    //   handler: (book) => console.log('Delete book', book),
+    // },
   ];
 
   constructor(
@@ -96,6 +97,61 @@ export class Books implements OnInit {
       maxHeight: '85vh',
       panelClass: 'book-dialog',
       autoFocus: false,
+    });
+  }
+
+  openAddBook() {
+    const dialog = this.dialog.open(AddEditBook, {
+      maxWidth: '750px',
+      maxHeight: '85vh',
+      autoFocus: false,
+    });
+
+    dialog.afterClosed().subscribe((result: IBookRequest) => {
+      if (result) {
+        console.log(result);
+        this.booksService.createBook(result).subscribe({
+          next: (res) => {
+            console.log(res, 'create book res');
+          },
+          error: (err: any) => {
+            console.log(err);
+          },
+          complete: () => {
+            this.loadAllBooks();
+          },
+        });
+      }
+    });
+  }
+
+  editBook(book: IBookResponse) {
+    const dialog = this.dialog.open(AddEditBook, {
+      data: book,
+      maxWidth: '750px',
+      maxHeight: '85vh',
+      autoFocus: false,
+    });
+
+    dialog.afterClosed().subscribe((result: IBookRequest) => {
+      if (result) {
+        console.log(result);
+        const bookReqData = {
+          price: result.price,
+          availableQuantity: result.availableQuantity,
+        };
+        this.booksService.updateBook(bookReqData, book.id).subscribe({
+          next: (res) => {
+            console.log(res, 'update book res');
+          },
+          error: (err: any) => {
+            console.log(err);
+          },
+          complete: () => {
+            this.loadAllBooks();
+          },
+        });
+      }
     });
   }
 }

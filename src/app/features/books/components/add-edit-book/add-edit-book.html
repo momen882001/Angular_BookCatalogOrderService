@@ -1,0 +1,91 @@
+<div class="dialog-container">
+  <header class="dialog-header">
+    <div class="title-wrapper">
+      <div class="icon-box">
+        <mat-icon>
+          {{ isEditMode ? 'edit' : 'add' }}
+        </mat-icon>
+      </div>
+
+      <div>
+        <h2>
+          {{ isEditMode ? 'Edit Book' : 'Add New Book' }}
+        </h2>
+
+        <p>
+          {{ isEditMode ? 'Update book information' : 'Create a new book entry' }}
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <form class="book-form" [formGroup]="bookForm" (ngSubmit)="submit()">
+    <mat-form-field appearance="outline">
+      <mat-label>Book Title</mat-label>
+
+      <input matInput formControlName="title" />
+
+      <mat-error *ngIf="title?.hasError('required')"> Title is required </mat-error>
+
+      <mat-error *ngIf="title?.hasError('maxlength')"> Maximum 255 characters </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>ISBN</mat-label>
+
+      <input matInput formControlName="isbn" />
+
+      <mat-error *ngIf="isbn?.hasError('required')"> ISBN is required </mat-error>
+
+      <mat-error *ngIf="isbn?.hasError('minlength') || isbn?.hasError('maxlength')">
+        ISBN must be between 10 and 20 characters
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Author</mat-label>
+
+      <input matInput formControlName="author" />
+
+      <mat-error *ngIf="author?.hasError('required')"> Author is required </mat-error>
+    </mat-form-field>
+
+    <div class="row">
+      <mat-form-field appearance="outline">
+        <mat-label>Price</mat-label>
+
+        <input matInput type="number" formControlName="price" />
+
+        <span matTextPrefix>$&nbsp;</span>
+
+        <mat-error *ngIf="price?.hasError('required')"> Price is required </mat-error>
+
+        <mat-error *ngIf="price?.hasError('min')"> Price must be greater than 0 </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Available Quantity</mat-label>
+
+        <input matInput type="number" formControlName="availableQuantity" />
+
+        <mat-error *ngIf="availableQuantity?.hasError('required')">
+          Quantity is required
+        </mat-error>
+
+        <mat-error *ngIf="availableQuantity?.hasError('min')">
+          Quantity cannot be negative
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <footer class="actions">
+      <button mat-button type="button" (click)="cancel()">Cancel</button>
+
+      <button mat-flat-button color="primary" type="submit">
+        {{ isEditMode ? 'Update Book' : 'Add Book' }}
+      </button>
+    </footer>
+  </form>
+</div>

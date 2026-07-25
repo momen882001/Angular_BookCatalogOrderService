@@ -1,0 +1,105 @@
+.dialog-container {
+  width: 650px;
+
+  background: var(--app-card-bg);
+
+  color: var(--app-text);
+
+  border-radius: 18px;
+
+  overflow: hidden;
+}
+
+.dialog-header {
+  padding: 24px;
+}
+
+.title-wrapper {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  .icon-box {
+    width: 48px;
+
+    height: 48px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 14px;
+
+    background: var(--app-primary-container);
+
+    color: var(--app-primary);
+  }
+
+  h2 {
+    margin: 0;
+
+    font-size: 24px;
+
+    font-weight: 700;
+  }
+
+  p {
+    margin: 4px 0 0;
+
+    color: var(--app-text-muted);
+  }
+}
+
+.book-form {
+  padding: 24px;
+
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 18px;
+}
+
+.row {
+  display: grid;
+
+  grid-template-columns: 1fr 1fr;
+
+  gap: 16px;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.actions {
+  display: flex;
+
+  justify-content: flex-end;
+
+  gap: 12px;
+
+  margin-top: 10px;
+
+  button:first-child {
+    color: var(--app-text-muted);
+  }
+}
+
+input[disabled] {
+  color: var(--app-text-muted);
+}
+
+@media (max-width: 700px) {
+  .dialog-container {
+    width: 100%;
+  }
+
+  .row {
+    grid-template-columns: 1fr;
+  }
+}

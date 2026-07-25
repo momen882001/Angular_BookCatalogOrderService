@@ -7,4 +7,6 @@ export const URLs = {
 
   // books
   getAllBooks: 'book',
+  createBook: 'book',
+  updateBook: 'book/:id',
 };

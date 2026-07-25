@@ -8,6 +8,11 @@ export interface IBookRequest {
   availableQuantity: number;
 }
 
+export interface IUpdateBookRequest {
+  price: number;
+  availableQuantity: number;
+}
+
 export interface IBookResponse {
   id: number;
   title: string;
