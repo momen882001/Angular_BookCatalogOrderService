@@ -7,10 +7,12 @@ import {
 import { TableAction, TableColumn } from '../../../shared/interfaces/table-configuration-interface';
 import { BooksService } from '../../../core/services/books.service';
 import { IBookResponse } from '../interfaces/BookInterface';
+import { ViewBook } from './view-book/view-book';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-books',
-  imports: [GenericTable],
+  imports: [GenericTable, MatDialogModule],
   templateUrl: './books.html',
   styleUrl: './books.scss',
 })
@@ -35,7 +37,7 @@ export class Books implements OnInit {
     {
       icon: 'visibility',
       label: 'View',
-      handler: (book) => console.log('View book', book),
+      handler: (book) => this.viewBookDetails(book),
     },
     {
       icon: 'edit',
@@ -49,7 +51,10 @@ export class Books implements OnInit {
     },
   ];
 
-  constructor(private booksService: BooksService) {}
+  constructor(
+    private booksService: BooksService,
+    public dialog: MatDialog,
+  ) {}
 
   ngOnInit(): void {
     this.loadAllBooks();
@@ -76,11 +81,21 @@ export class Books implements OnInit {
     return this.allBooks().filter((book) => book.title.toLowerCase().includes(term));
   });
 
-  protected readonly tableData = computed(() => {
+  readonly tableData = computed(() => {
     return this.filteredBooks() as IBookResponse[];
   });
 
-  protected onSearch(event: TableSearchEvent): void {
+  onSearch(event: TableSearchEvent): void {
     this.searchTerm.set(event.searchValue);
+  }
+
+  viewBookDetails(book: IBookResponse): void {
+    this.dialog.open(ViewBook, {
+      data: book,
+      maxWidth: '750px',
+      maxHeight: '85vh',
+      panelClass: 'book-dialog',
+      autoFocus: false,
+    });
   }
 }
