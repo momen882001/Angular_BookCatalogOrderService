@@ -4,10 +4,7 @@ import {
   GenericTable,
   TableSearchEvent,
 } from '../../../shared/components/generic-table/generic-table';
-import {
-  TableAction,
-  TableColumn,
-} from '../../../shared/interfaces/table-configuration-interface';
+import { TableAction, TableColumn } from '../../../shared/interfaces/table-configuration-interface';
 
 interface BookRow {
   id: number;
@@ -145,10 +142,7 @@ export class Books {
     }
 
     return this.allBooks().filter((book) =>
-      [book.title, book.author, book.genre, book.status]
-        .join(' ')
-        .toLowerCase()
-        .includes(term),
+      [book.title, book.author, book.genre, book.status].join(' ').toLowerCase().includes(term),
     );
   });
 
@@ -156,7 +150,7 @@ export class Books {
 
   protected readonly tableData = computed(() => {
     const start = this.pageIndex() * this.pageSize();
-    return this.filteredBooks().slice(start, start + this.pageSize()) as Record<
+    return this.filteredBooks().slice(start, start + this.pageSize()) as unknown as Record<
       string,
       unknown
     >[];
