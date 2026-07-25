@@ -1,13 +1,5 @@
 import { DatePipe } from '@angular/common';
-import {
-  Component,
-  DestroyRef,
-  OnInit,
-  computed,
-  inject,
-  input,
-  output,
-} from '@angular/core';
+import { Component, DestroyRef, OnInit, computed, inject, input, output } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormControl, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
@@ -18,10 +10,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatPaginatorModule, PageEvent } from '@angular/material/paginator';
 import { MatTableModule } from '@angular/material/table';
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
-import {
-  TableAction,
-  TableColumn,
-} from '../../interfaces/table-configuration-interface';
+import { TableAction, TableColumn } from '../../interfaces/table-configuration-interface';
 
 export interface TableSearchEvent {
   searchValue: string;
@@ -52,13 +41,13 @@ export class GenericTable implements OnInit {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   readonly actions = input<TableAction<any>[]>([]);
   readonly isSearchable = input(false);
-  readonly totalItems = input(0);
-  readonly pageSize = input(10);
+  // readonly totalItems = input(0);
+  // readonly pageSize = input(10);
   readonly emptyTableMessage = input('No data available');
   readonly searchPlaceholder = input('Search…');
 
   readonly search = output<TableSearchEvent>();
-  readonly pageChange = output<PageEvent>();
+  // readonly pageChange = output<PageEvent>();
 
   protected readonly searchControl = new FormControl('', { nonNullable: true });
 
@@ -81,9 +70,9 @@ export class GenericTable implements OnInit {
       });
   }
 
-  protected onPageChange(event: PageEvent): void {
-    this.pageChange.emit(event);
-  }
+  // protected onPageChange(event: PageEvent): void {
+  //   this.pageChange.emit(event);
+  // }
 
   protected cellValue(element: Record<string, unknown>, column: TableColumn): unknown {
     const value = element[column.key];

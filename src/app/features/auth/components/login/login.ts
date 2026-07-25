@@ -1,15 +1,19 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import {
+  FormBuilder,
+  FormGroup,
   NonNullableFormBuilder,
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthService } from '../../../../core/services/auth.service';
+import { StorageService } from '../../../../core/services/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -25,22 +29,41 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   templateUrl: './login.html',
   styleUrl: './login.scss',
 })
-export class Login {
-  private readonly fb = inject(NonNullableFormBuilder);
+export class Login implements OnInit {
+  readonly hidePassword = signal(true);
+  readonly isSubmitting = signal(false);
+  readonly submitAttempted = signal(false);
+  readonly formError = signal<string | null>(null);
 
-  protected readonly hidePassword = signal(true);
-  protected readonly isSubmitting = signal(false);
-  protected readonly submitAttempted = signal(false);
-  protected readonly formError = signal<string | null>(null);
+  loginForm!: FormGroup;
 
-  protected readonly loginForm = this.fb.group({
-    username: this.fb.control('', [Validators.required, Validators.minLength(3)]),
-    password: this.fb.control('', [Validators.required, Validators.minLength(6)]),
-  });
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+    private storageService: StorageService,
+  ) {}
 
-  protected readonly passwordType = computed(() =>
-    this.hidePassword() ? 'password' : 'text',
-  );
+  ngOnInit(): void {
+    this.initLoginForm();
+  }
+
+  initLoginForm() {
+    this.loginForm = this.fb.group({
+      username: this.fb.control('', [
+        Validators.required,
+        Validators.minLength(3),
+        Validators.maxLength(50),
+      ]),
+      password: this.fb.control('', [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(100),
+      ]),
+    });
+  }
+
+  protected readonly passwordType = computed(() => (this.hidePassword() ? 'password' : 'text'));
 
   protected readonly passwordToggleIcon = computed(() =>
     this.hidePassword() ? 'visibility_off' : 'visibility',
@@ -52,34 +75,6 @@ export class Login {
 
   protected togglePasswordVisibility(): void {
     this.hidePassword.update((hidden) => !hidden);
-  }
-
-  protected usernameError(): string | null {
-    const control = this.loginForm.controls.username;
-    if (!(control.touched || this.submitAttempted()) || !control.errors) {
-      return null;
-    }
-    if (control.errors['required']) {
-      return 'Username is required';
-    }
-    if (control.errors['minlength']) {
-      return 'Username must be at least 3 characters';
-    }
-    return null;
-  }
-
-  protected passwordError(): string | null {
-    const control = this.loginForm.controls.password;
-    if (!(control.touched || this.submitAttempted()) || !control.errors) {
-      return null;
-    }
-    if (control.errors['required']) {
-      return 'Password is required';
-    }
-    if (control.errors['minlength']) {
-      return 'Password must be at least 6 characters';
-    }
-    return null;
   }
 
   protected onSubmit(): void {
@@ -94,14 +89,50 @@ export class Login {
     this.isSubmitting.set(true);
     const { username, password } = this.loginForm.getRawValue();
 
-    // Placeholder until auth API is wired
-    console.log('Login credentials', { username, password });
+    this.authService.login({ username, password }).subscribe({
+      next: (res) => {
+        console.log(res);
+        if (res) {
+          this.isSubmitting.set(false);
+          this.storageService.setItem('userData', res);
+          this.router.navigate(['/dashboard/books']);
+        }
+      },
+      error: (err) => {
+        this.isSubmitting.set(false);
+        console.log('err', err);
 
-    window.setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.formError.set(
-        'Sign-in is not connected yet. Your credentials were validated locally.',
-      );
-    }, 700);
+        this.formError.set('Invalid username or password.');
+      },
+    });
+  }
+
+  //* Error handling methods *//
+  protected usernameError(): string | null {
+    const control = this.loginForm.controls['username'];
+    if (!(control.touched || this.submitAttempted()) || !control.errors) {
+      return null;
+    }
+    if (control.errors['required']) {
+      return 'Username is required';
+    }
+    if (control.errors['minlength'] || control.errors['maxlength']) {
+      return 'Username must be between 3 and 50 characters';
+    }
+    return null;
+  }
+
+  protected passwordError(): string | null {
+    const control = this.loginForm.controls['password'];
+    if (!(control.touched || this.submitAttempted()) || !control.errors) {
+      return null;
+    }
+    if (control.errors['required']) {
+      return 'Password is required';
+    }
+    if (control.errors['minlength'] || control.errors['maxlength']) {
+      return 'Password must be between 8 and 100 characters';
+    }
+    return null;
   }
 }
