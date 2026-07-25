@@ -1,1 +1,45 @@
-<p>sidebar works!</p>
+<aside class="sidebar">
+  <button class="toggle-btn" (click)="toggleSidebar()">
+    <i class="bi bi-list"></i>
+  </button>
+
+  <div class="brand">
+    <div class="logo">
+      <i class="bi bi-book-half"></i>
+    </div>
+
+    <div class="brand-info">
+      <h2>Book Store</h2>
+
+      <span>Admin Dashboard</span>
+    </div>
+  </div>
+
+  <nav class="navigation">
+    <a routerLink="/users" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-people"></i>
+
+      <span>Users</span>
+    </a>
+
+    <a routerLink="/books" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-book"></i>
+
+      <span>Books</span>
+    </a>
+
+    <a routerLink="/orders" routerLinkActive="active" class="nav-item">
+      <i class="bi bi-receipt"></i>
+
+      <span>Orders</span>
+    </a>
+  </nav>
+
+  <div class="bottom-section">
+    <button class="logout-btn">
+      <i class="bi bi-box-arrow-right"></i>
+
+      <span>Logout</span>
+    </button>
+  </div>
+</aside>
