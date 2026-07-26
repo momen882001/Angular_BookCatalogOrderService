@@ -3,6 +3,7 @@ import { AuthService } from '../../core/services/auth.service';
 import { StorageService } from '../../core/services/storage.service';
 import { ILoginResponse } from '../../features/auth/interfaces/AuthInterface';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { UserRoleEnum } from '../../shared/enums/UserRoleEnum';
 
 @Component({
   selector: 'app-sidebar',
@@ -18,6 +19,10 @@ export class Sidebar {
   ) {}
 
   ngOnInit(): void {}
+
+  isUserAdmin(): boolean {
+    return this.authservice.getUserData?.role === UserRoleEnum.ADMIN;
+  }
 
   getUsername(): string {
     const userData = this.storageService.getItem<ILoginResponse>('userData');

@@ -64,19 +64,8 @@
           }
         </mat-form-field>
 
-        <button
-          mat-flat-button
-          color="primary"
-          type="submit"
-          class="login-form__submit"
-          [disabled]="isSubmitting()"
-        >
-          @if (isSubmitting()) {
-            <mat-spinner diameter="20" aria-label="Signing in"></mat-spinner>
-            <span>Signing in…</span>
-          } @else {
-            <span>Sign in</span>
-          }
+        <button mat-flat-button color="primary" type="submit" class="login-form__submit">
+          Sign in
         </button>
       </form>
 

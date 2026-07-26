@@ -55,7 +55,6 @@ function passwordsMatchValidator(): ValidatorFn {
 export class Signup implements OnInit {
   readonly hidePassword = signal(true);
   readonly hideConfirmPassword = signal(true);
-  readonly isSubmitting = signal(false);
   readonly submitAttempted = signal(false);
   readonly formError = signal<string | null>(null);
 
@@ -131,7 +130,6 @@ export class Signup implements OnInit {
       return;
     }
 
-    this.isSubmitting.set(true);
     const { firstname, lastname, username, password } = this.signupForm.getRawValue();
 
     this.authService
@@ -140,12 +138,10 @@ export class Signup implements OnInit {
         next: (res) => {
           console.log(res);
           if (res) {
-            this.isSubmitting.set(false);
             this.router.navigate(['/auth/login']);
           }
         },
         error: (err) => {
-          this.isSubmitting.set(false);
           console.log('err', err);
           this.formError.set('Failed to create account. Please try again.');
         },

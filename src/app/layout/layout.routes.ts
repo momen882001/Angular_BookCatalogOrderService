@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { Layout } from './layout';
+import { AuthGuard } from '../core/services/auth.guard.service';
 
 export const LAYOUT_ROUTES: Routes = [
   {
@@ -16,5 +17,6 @@ export const LAYOUT_ROUTES: Routes = [
         pathMatch: 'full',
       },
     ],
+    canActivate: [AuthGuard],
   },
 ];

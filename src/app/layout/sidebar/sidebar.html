@@ -21,11 +21,13 @@
 
       <span>Books</span>
     </a>
-    <a routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
-      <i class="bi bi-people"></i>
+    @if (isUserAdmin()) {
+      <a routerLink="/dashboard/users" routerLinkActive="active" class="nav-item">
+        <i class="bi bi-people"></i>
 
-      <span>Users</span>
-    </a>
+        <span>Users</span>
+      </a>
+    }
 
     <a routerLink="/dashboard/orders" routerLinkActive="active" class="nav-item">
       <i class="bi bi-receipt"></i>

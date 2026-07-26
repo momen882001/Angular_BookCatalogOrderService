@@ -8,6 +8,7 @@ import {
   ILoginResponse,
   IRegisterRequest,
 } from '../../features/auth/interfaces/AuthInterface';
+import { UserRoleEnum } from '../../shared/enums/UserRoleEnum';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +50,9 @@ export class AuthService {
 
   get getUserData(): ILoginResponse | null {
     return this.storageService.getItem<ILoginResponse>('userData');
+  }
+
+  getUserRole(): UserRoleEnum {
+    return this.storageService.getItem<ILoginResponse>('userData')?.role as UserRoleEnum;
   }
 }

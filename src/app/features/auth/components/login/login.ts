@@ -6,7 +6,7 @@ import {
   ReactiveFormsModule,
   Validators,
 } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
@@ -31,9 +31,9 @@ import { StorageService } from '../../../../core/services/storage.service';
 })
 export class Login implements OnInit {
   readonly hidePassword = signal(true);
-  readonly isSubmitting = signal(false);
   readonly submitAttempted = signal(false);
   readonly formError = signal<string | null>(null);
+  returnUrl: string = '/dashboard/books';
 
   loginForm!: FormGroup;
 
@@ -41,11 +41,13 @@ export class Login implements OnInit {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private activatedRoute: ActivatedRoute,
     private storageService: StorageService,
   ) {}
 
   ngOnInit(): void {
     this.initLoginForm();
+    this.returnUrl = this.activatedRoute.snapshot.queryParams['returnUrl'] || '/dashboard/books';
   }
 
   initLoginForm() {
@@ -86,20 +88,17 @@ export class Login implements OnInit {
       return;
     }
 
-    this.isSubmitting.set(true);
     const { username, password } = this.loginForm.getRawValue();
 
     this.authService.login({ username, password }).subscribe({
       next: (res) => {
         console.log(res);
         if (res) {
-          this.isSubmitting.set(false);
           this.storageService.setItem('userData', res);
-          this.router.navigate(['/dashboard/books']);
+          this.router.navigateByUrl(this.returnUrl);
         }
       },
       error: (err) => {
-        this.isSubmitting.set(false);
         console.log('err', err);
 
         this.formError.set('Invalid username or password.');

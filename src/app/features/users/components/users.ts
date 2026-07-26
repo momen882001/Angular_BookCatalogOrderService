@@ -8,6 +8,9 @@ import { TableAction, TableColumn } from '../../../shared/interfaces/table-confi
 import { UsersService } from '../../../core/services/users.service';
 import { ViewUser } from './view-user/view-user';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
+import { AuthService } from '../../../core/services/auth.service';
+import { Router } from '@angular/router';
+import { UserRoleEnum } from '../../../shared/enums/UserRoleEnum';
 
 @Component({
   selector: 'app-users',
@@ -43,7 +46,11 @@ export class Users {
   constructor(
     private usersService: UsersService,
     public dialog: MatDialog,
-  ) {}
+    private authService: AuthService,
+    private router: Router,
+  ) {
+    // this.validateIfUserNotAdmin();
+  }
 
   ngOnInit(): void {
     this.loadAllUsers();
@@ -80,12 +87,18 @@ export class Users {
     this.searchTerm.set(event.searchValue);
   }
 
+  validateIfUserNotAdmin() {
+    const isAdmin: boolean = this.authService.getUserData?.role === UserRoleEnum.ADMIN;
+    if (!isAdmin) {
+      this.router.navigate(['/dashboard/books']);
+    }
+  }
+
   viewUserDetails(user: IUserResponse): void {
     this.dialog.open(ViewUser, {
       data: user,
       maxWidth: '750px',
       maxHeight: '85vh',
-      // panelClass: 'user-dialog',
       autoFocus: false,
     });
   }
