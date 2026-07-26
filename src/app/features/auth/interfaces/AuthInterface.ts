@@ -14,6 +14,7 @@ export interface ILoginRequest {
 }
 
 export interface ILoginResponse {
+  userId: number;
   token: string;
   firstname: string;
   lastname: string;

@@ -1,4 +1,4 @@
-.books-page {
+.users-page {
   &__header {
     display: flex;
 
@@ -13,7 +13,7 @@
 }
 
 @media (max-width: 600px) {
-  .books-page {
+  .users-page {
     &__header {
       flex-direction: column;
 

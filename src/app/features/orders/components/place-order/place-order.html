@@ -1,0 +1,153 @@
+<div class="dialog-container">
+  <!-- Header -->
+
+  <header class="dialog-header">
+    <div class="icon-box">
+      <mat-icon> shopping_cart </mat-icon>
+    </div>
+
+    <div>
+      <h2>Place Order</h2>
+
+      <p>Select books and quantity to create order</p>
+    </div>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <!-- Content -->
+
+  <div class="dialog-content">
+    <div class="checkout-layout">
+      <!-- LEFT SIDE -->
+
+      <div class="selection-area">
+        <form [formGroup]="orderForm">
+          <div class="items-container" formArrayName="orderItems">
+            @for (item of orderItems.controls; track item; let i = $index) {
+              <div class="order-card" [formGroupName]="i">
+                <div class="card-header">
+                  <span> Item {{ i + 1 }} </span>
+
+                  @if (orderItems.length > 1) {
+                    <button mat-icon-button color="warn" type="button" (click)="removeOrderItem(i)">
+                      <mat-icon> delete </mat-icon>
+                    </button>
+                  }
+                </div>
+
+                <mat-form-field appearance="outline">
+                  <mat-label> Book </mat-label>
+
+                  <mat-select formControlName="bookId" (selectionChange)="onBookChange(item)">
+                    @for (book of books; track book.id) {
+                      <mat-option
+                        [value]="book.id"
+                        [disabled]="book.availableQuantity === 0 || isBookSelected(book.id)"
+                      >
+                        {{ book.title }}
+
+                        <span class="stock">
+                          (
+                          {{ book.availableQuantity }}
+                          available )
+                        </span>
+                      </mat-option>
+                    }
+                  </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                  <mat-label> Quantity </mat-label>
+
+                  <input matInput type="number" formControlName="quantity" />
+
+                  @if (item.get('quantity')?.hasError('exceedsStock')) {
+                    <mat-error>
+                      Only
+                      {{ item.get('quantity')?.getError('exceedsStock')?.availableQuantity }}
+                      items available
+                    </mat-error>
+                  }
+                </mat-form-field>
+              </div>
+            }
+          </div>
+        </form>
+
+        <button mat-stroked-button class="add-item-btn" (click)="addOrderItem()">
+          <mat-icon> add </mat-icon>
+
+          Add Book
+        </button>
+      </div>
+
+      <!-- RIGHT SIDE -->
+
+      <div class="invoice-card">
+        <div class="invoice-header">
+          <mat-icon> receipt_long </mat-icon>
+
+          <div>
+            <h3>Order Summary</h3>
+
+            <p>Invoice Details</p>
+          </div>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="invoice-items">
+          @if (selectedItems.length) {
+            @for (item of selectedItems; track $index) {
+              <div class="invoice-row">
+                <div>
+                  <h4>
+                    {{ item.title }}
+                  </h4>
+
+                  <small>
+                    {{ item.quantity }}
+                    × ${{ item.unitPrice }}
+                  </small>
+                </div>
+
+                <strong> ${{ item.subtotal | number: '1.2-2' }} </strong>
+              </div>
+            }
+          } @else {
+            <div class="empty-invoice">
+              <mat-icon> shopping_cart </mat-icon>
+
+              <p>No books selected</p>
+            </div>
+          }
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="total">
+          <span> Total </span>
+
+          <strong> ${{ totalAmount | number: '1.2-2' }} </strong>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+
+  <footer class="actions">
+    <button mat-button type="button" (click)="cancel()">Cancel</button>
+
+    <button
+      mat-flat-button
+      color="primary"
+      type="button"
+      [disabled]="orderForm.invalid"
+      (click)="submit()"
+    >
+      Place Order
+    </button>
+  </footer>
+</div>

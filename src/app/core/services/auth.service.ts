@@ -46,4 +46,8 @@ export class AuthService {
   get getToken(): string | null {
     return this.storageService.getItem<ILoginResponse>('userData')?.token || null;
   }
+
+  get getUserData(): ILoginResponse | null {
+    return this.storageService.getItem<ILoginResponse>('userData');
+  }
 }

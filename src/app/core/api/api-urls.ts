@@ -12,4 +12,9 @@ export const URLs = {
 
   // users
   getAllUsers: 'user',
+
+  // orders
+  getAllOrders: 'order',
+  placeOrder: 'order',
+  cancelOrder: 'order/:id/cancel',
 };
