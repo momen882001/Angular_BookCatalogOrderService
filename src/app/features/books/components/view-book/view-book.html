@@ -1,0 +1,127 @@
+<div class="dialog-container">
+  <header class="dialog-header">
+    <div class="header-left">
+      <div class="book-avatar">
+        <mat-icon>menu_book</mat-icon>
+      </div>
+
+      <div>
+        <h2>{{ data.title }}</h2>
+
+        <p>{{ data.author }}</p>
+      </div>
+    </div>
+
+    <button mat-icon-button (click)="dialogRef.close()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </header>
+
+  <div class="dialog-content">
+    <!-- General -->
+
+    <section>
+      <h3>General Information</h3>
+
+      <div class="grid">
+        <div class="card">
+          <span>Title</span>
+
+          <strong>{{ data.title }}</strong>
+        </div>
+
+        <div class="card">
+          <span>Author</span>
+
+          <strong>{{ data.author }}</strong>
+        </div>
+
+        <div class="card">
+          <span>ISBN</span>
+
+          <strong>{{ data.isbn }}</strong>
+        </div>
+
+        <div class="card">
+          <span>Price</span>
+
+          <strong>{{ data.price | currency }}</strong>
+        </div>
+
+        <div class="card">
+          <span>Available Quantity</span>
+
+          <strong>{{ data.availableQuantity }}</strong>
+        </div>
+
+        <div class="card">
+          <span>Status</span>
+
+          <mat-chip
+            [class.available]="data.availableQuantity > 0"
+            [class.out]="data.availableQuantity === 0"
+          >
+            {{ data.availableQuantity > 0 ? 'Available' : 'Out Of Stock' }}
+          </mat-chip>
+        </div>
+      </div>
+    </section>
+
+    <!-- User -->
+
+    <section>
+      <h3>Created By</h3>
+
+      <div class="grid">
+        <div class="card">
+          <span>Full Name</span>
+
+          <strong>
+            {{ data.createdBy.firstname }}
+            {{ data.createdBy.lastname }}
+          </strong>
+        </div>
+
+        <div class="card">
+          <span>Username</span>
+
+          <strong>{{ data.createdBy.username }}</strong>
+        </div>
+
+        <div class="card">
+          <span>Role</span>
+
+          <strong>{{ data.createdBy.role }}</strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- Audit -->
+
+    <section>
+      <h3>Audit Information</h3>
+
+      <div class="grid">
+        <div class="card">
+          <span>Created At</span>
+
+          <strong>
+            {{ data.createdAt | date: 'medium' }}
+          </strong>
+        </div>
+
+        <div class="card">
+          <span>Updated At</span>
+
+          <strong>
+            {{ data.updatedAt | date: 'medium' }}
+          </strong>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <footer class="dialog-footer">
+    <button mat-flat-button color="primary" (click)="dialogRef.close()">Close</button>
+  </footer>
+</div>

@@ -1,4 +1,4 @@
-import { Component, computed, signal } from '@angular/core';
+import { Component, computed, OnInit, signal } from '@angular/core';
 import {
   AbstractControl,
   FormBuilder,
@@ -8,12 +8,14 @@ import {
   ValidatorFn,
   Validators,
 } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { AuthService } from '../../../../core/services/auth.service';
+import { UserRoleEnum } from '../../../../shared/enums/UserRoleEnum';
 
 const NAME_PATTERN = /^[a-zA-Z\s'-]+$/;
 const USERNAME_PATTERN = /^[a-zA-Z0-9._-]+$/;
@@ -50,40 +52,30 @@ function passwordsMatchValidator(): ValidatorFn {
   templateUrl: './signup.html',
   styleUrl: './signup.scss',
 })
-export class Signup {
-  protected readonly hidePassword = signal(true);
-  protected readonly hideConfirmPassword = signal(true);
-  protected readonly isSubmitting = signal(false);
-  protected readonly submitAttempted = signal(false);
-  protected readonly formError = signal<string | null>(null);
+export class Signup implements OnInit {
+  readonly hidePassword = signal(true);
+  readonly hideConfirmPassword = signal(true);
+  readonly isSubmitting = signal(false);
+  readonly submitAttempted = signal(false);
+  readonly formError = signal<string | null>(null);
 
-  protected readonly signupForm: FormGroup;
+  signupForm!: FormGroup;
 
-  protected readonly passwordType = computed(() =>
-    this.hidePassword() ? 'password' : 'text',
-  );
+  constructor(
+    private readonly fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router,
+  ) {}
 
-  protected readonly confirmPasswordType = computed(() =>
-    this.hideConfirmPassword() ? 'password' : 'text',
-  );
+  ngOnInit(): void {
+    this.initSingUpForm();
 
-  protected readonly passwordToggleIcon = computed(() =>
-    this.hidePassword() ? 'visibility_off' : 'visibility',
-  );
+    this.signupForm.get('password')?.valueChanges.subscribe(() => {
+      this.signupForm.get('confirmPassword')?.updateValueAndValidity({ emitEvent: false });
+    });
+  }
 
-  protected readonly confirmPasswordToggleIcon = computed(() =>
-    this.hideConfirmPassword() ? 'visibility_off' : 'visibility',
-  );
-
-  protected readonly passwordToggleLabel = computed(() =>
-    this.hidePassword() ? 'Show password' : 'Hide password',
-  );
-
-  protected readonly confirmPasswordToggleLabel = computed(() =>
-    this.hideConfirmPassword() ? 'Show confirm password' : 'Hide confirm password',
-  );
-
-  constructor(private readonly fb: FormBuilder) {
+  private initSingUpForm() {
     this.signupForm = this.fb.group({
       firstname: [
         '',
@@ -112,15 +104,8 @@ export class Signup {
           Validators.pattern(USERNAME_PATTERN),
         ],
       ],
-      password: [
-        '',
-        [Validators.required, Validators.minLength(8), Validators.maxLength(100)],
-      ],
+      password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
       confirmPassword: ['', [Validators.required, passwordsMatchValidator()]],
-    });
-
-    this.signupForm.get('password')?.valueChanges.subscribe(() => {
-      this.signupForm.get('confirmPassword')?.updateValueAndValidity({ emitEvent: false });
     });
   }
 
@@ -137,6 +122,37 @@ export class Signup {
     return !!(control && (control.touched || this.submitAttempted()) && control.errors);
   }
 
+  protected onSubmit(): void {
+    this.submitAttempted.set(true);
+    this.formError.set(null);
+    this.signupForm.markAllAsTouched();
+
+    if (this.signupForm.invalid) {
+      return;
+    }
+
+    this.isSubmitting.set(true);
+    const { firstname, lastname, username, password } = this.signupForm.getRawValue();
+
+    this.authService
+      .signUp({ firstname, lastname, username, password, role: UserRoleEnum.CUSTOMER })
+      .subscribe({
+        next: (res) => {
+          console.log(res);
+          if (res) {
+            this.isSubmitting.set(false);
+            this.router.navigate(['/auth/login']);
+          }
+        },
+        error: (err) => {
+          this.isSubmitting.set(false);
+          console.log('err', err);
+          this.formError.set('Failed to create account. Please try again.');
+        },
+      });
+  }
+
+  //* Error handling methods *//
   protected firstnameError(): string | null {
     const control = this.signupForm.get('firstname');
     if (!this.shouldShowErrors('firstname') || !control?.errors) {
@@ -149,7 +165,7 @@ export class Signup {
       return 'First name must be between 2 and 50 characters';
     }
     if (control.errors['pattern']) {
-      return "First name can only contain letters, spaces, hyphens, and apostrophes";
+      return 'First name can only contain letters, spaces, hyphens, and apostrophes';
     }
     return null;
   }
@@ -166,7 +182,7 @@ export class Signup {
       return 'Last name must be between 2 and 50 characters';
     }
     if (control.errors['pattern']) {
-      return "Last name can only contain letters, spaces, hyphens, and apostrophes";
+      return 'Last name can only contain letters, spaces, hyphens, and apostrophes';
     }
     return null;
   }
@@ -216,26 +232,26 @@ export class Signup {
     return null;
   }
 
-  protected onSubmit(): void {
-    this.submitAttempted.set(true);
-    this.formError.set(null);
-    this.signupForm.markAllAsTouched();
+  //---------------------------------- Related to Password ---------------------------------------------
+  protected readonly passwordType = computed(() => (this.hidePassword() ? 'password' : 'text'));
 
-    if (this.signupForm.invalid) {
-      return;
-    }
+  protected readonly confirmPasswordType = computed(() =>
+    this.hideConfirmPassword() ? 'password' : 'text',
+  );
 
-    this.isSubmitting.set(true);
-    const { firstname, lastname, username, password } = this.signupForm.getRawValue();
+  protected readonly passwordToggleIcon = computed(() =>
+    this.hidePassword() ? 'visibility_off' : 'visibility',
+  );
 
-    // Placeholder until auth API is wired
-    console.log('Signup payload', { firstname, lastname, username, password });
+  protected readonly confirmPasswordToggleIcon = computed(() =>
+    this.hideConfirmPassword() ? 'visibility_off' : 'visibility',
+  );
 
-    window.setTimeout(() => {
-      this.isSubmitting.set(false);
-      this.formError.set(
-        'Sign-up is not connected yet. Your details were validated locally.',
-      );
-    }, 700);
-  }
+  protected readonly passwordToggleLabel = computed(() =>
+    this.hidePassword() ? 'Show password' : 'Hide password',
+  );
+
+  protected readonly confirmPasswordToggleLabel = computed(() =>
+    this.hideConfirmPassword() ? 'Show confirm password' : 'Hide confirm password',
+  );
 }

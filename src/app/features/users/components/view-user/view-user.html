@@ -1,0 +1,139 @@
+<div class="dialog-container">
+  <!-- Header -->
+  <div class="header">
+    <div class="avatar">
+      {{ initials }}
+    </div>
+
+    <div class="user-info">
+      <h2>{{ data.firstname }} {{ data.lastname }}</h2>
+
+      <span class="username">@{{ data.username }}</span>
+
+      <mat-chip
+        class="role-chip"
+        [class.admin]="data.role === UserRoleEnum.ADMIN"
+        [class.customer]="data.role === UserRoleEnum.CUSTOMER"
+      >
+        <mat-icon>
+          {{ data.role === UserRoleEnum.ADMIN ? 'shield' : 'person' }}
+        </mat-icon>
+
+        {{ data.role }}
+      </mat-chip>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Scrollable Content -->
+  <div class="dialog-content">
+    <!-- User Information -->
+    <section class="details">
+      <div class="info-card">
+        <mat-icon>badge</mat-icon>
+
+        <div>
+          <label>First Name</label>
+
+          <span>{{ data.firstname }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <mat-icon>person</mat-icon>
+
+        <div>
+          <label>Last Name</label>
+
+          <span>{{ data.lastname }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <mat-icon>alternate_email</mat-icon>
+
+        <div>
+          <label>Username</label>
+
+          <span>{{ data.username }}</span>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <mat-icon>calendar_today</mat-icon>
+
+        <div>
+          <label>Created At</label>
+
+          <span>
+            {{ data.createdAt | date: 'medium' }}
+          </span>
+        </div>
+      </div>
+    </section>
+
+    @if (data.role === UserRoleEnum.ADMIN) {
+      <!-- Statistics -->
+      <section class="stats">
+        <div class="stat-card">
+          <mat-icon>menu_book</mat-icon>
+
+          <div>
+            <span class="number">
+              {{ data.books?.length ?? 0 }}
+            </span>
+
+            <small>Books Created</small>
+          </div>
+        </div>
+      </section>
+
+      <!-- Books -->
+      <section class="books-section">
+        <div class="section-header">
+          <h3>Created Books</h3>
+
+          <span class="count">
+            {{ data.books?.length ?? 0 }}
+          </span>
+        </div>
+
+        @if (data.books?.length) {
+          <div class="books-list">
+            @for (book of data.books; track book.id) {
+              <div class="book-card">
+                <div class="book-info">
+                  <h4>{{ book.title }}</h4>
+
+                  <p>{{ book.author }}</p>
+
+                  <span class="isbn"> ISBN: {{ book.isbn }} </span>
+                </div>
+
+                <div class="book-meta">
+                  <span class="price"> ${{ book.price }} </span>
+
+                  <small> Qty: {{ book.availableQuantity }} </small>
+                </div>
+              </div>
+            }
+          </div>
+        } @else {
+          <div class="empty-state">
+            <mat-icon>library_books</mat-icon>
+
+            <h4>No Books Yet</h4>
+
+            <p>This administrator hasn't created any books.</p>
+          </div>
+        }
+      </section>
+    }
+  </div>
+
+  <!-- Footer -->
+  <div class="actions">
+    <button mat-flat-button color="primary" (click)="close()">Close</button>
+  </div>
+</div>

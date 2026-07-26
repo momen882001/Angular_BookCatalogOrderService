@@ -1,14 +1,8 @@
 <section class="page-container fade-in books-page">
   <header class="books-page__header">
     <div>
-      <h1 class="page-title">Books</h1>
+      <h1 class="page-title">Users</h1>
     </div>
-
-    <button class="create-book-btn" type="button" (click)="openAddBook()">
-      <i class="bi bi-plus-lg"></i>
-
-      <span> Add Book </span>
-    </button>
   </header>
 
   <app-generic-table
@@ -16,8 +10,8 @@
     [columns]="columns"
     [actions]="actions"
     [isSearchable]="true"
-    searchPlaceholder="Search books…"
-    emptyTableMessage="No books match your search."
+    searchPlaceholder="Search users…"
+    emptyTableMessage="No users match your search."
     (search)="onSearch($event)"
   />
 </section>

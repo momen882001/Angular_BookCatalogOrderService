@@ -1,0 +1,401 @@
+.dialog-container {
+  width: 760px;
+  max-width: 100%;
+  height: 80vh;
+  max-height: 760px;
+
+  display: flex;
+  flex-direction: column;
+
+  background: var(--app-card-bg);
+  border-radius: 18px;
+  overflow: hidden;
+}
+
+/* ==============================
+            HEADER
+================================ */
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+
+  padding: 28px;
+  flex-shrink: 0;
+}
+
+.avatar {
+  width: 82px;
+  height: 82px;
+
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: linear-gradient(135deg, var(--app-primary), var(--app-accent-warm));
+
+  color: white;
+
+  font-size: 28px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.user-info {
+  flex: 1;
+
+  h2 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--app-text);
+  }
+
+  .username {
+    display: block;
+    margin-top: 3px;
+    color: var(--app-text-muted);
+    font-size: 15px;
+  }
+}
+
+/* ==============================
+            ROLE
+================================ */
+
+.role-chip {
+  margin-top: 8px;
+
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  border-radius: 999px;
+
+  padding: 6px 14px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  border: none;
+
+  mat-icon {
+    font-size: 16px;
+    width: 16px;
+    height: 16px;
+  }
+
+  &.admin {
+    background-color: rgba(25, 118, 210, 0.12);
+    color: #1565c0;
+  }
+
+  &.customer {
+    background-color: rgba(76, 175, 80, 0.12);
+    color: #2e7d32;
+  }
+}
+
+/* ==============================
+        SCROLLABLE CONTENT
+================================ */
+
+.dialog-content {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  padding-bottom: 20px;
+}
+
+/* ==============================
+        USER DETAILS
+================================ */
+
+.details {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+
+  padding: 28px;
+}
+
+.info-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  background: var(--app-surface);
+
+  border: 1px solid var(--app-border);
+
+  border-radius: 14px;
+
+  padding: 18px;
+
+  transition: 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(0, 0, 0, 0.08);
+  }
+
+  mat-icon {
+    color: var(--app-primary);
+  }
+
+  label {
+    display: block;
+    color: var(--app-text-muted);
+    font-size: 13px;
+    margin-bottom: 4px;
+  }
+
+  span {
+    color: var(--app-text);
+    font-weight: 600;
+  }
+}
+
+/* ==============================
+            STATS
+================================ */
+
+.stats {
+  padding: 0 28px 24px;
+}
+
+.stat-card {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+
+  padding: 22px;
+
+  border-radius: 16px;
+
+  background: linear-gradient(135deg, var(--app-primary), var(--app-hero-to));
+
+  color: white;
+
+  mat-icon {
+    font-size: 36px;
+    width: 36px;
+    height: 36px;
+  }
+
+  .number {
+    display: block;
+    font-size: 28px;
+    font-weight: 700;
+  }
+
+  small {
+    opacity: 0.85;
+    font-size: 13px;
+  }
+}
+
+/* ==============================
+            BOOKS
+================================ */
+
+.books-section {
+  padding: 0 28px 28px;
+}
+
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 18px;
+
+  h3 {
+    margin: 0;
+    color: var(--app-text);
+  }
+
+  .count {
+    background: var(--app-primary-container);
+
+    color: var(--app-primary);
+
+    padding: 6px 12px;
+
+    border-radius: 999px;
+
+    font-size: 13px;
+    font-weight: 600;
+  }
+}
+
+.books-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  max-height: 340px;
+  overflow-y: auto;
+
+  padding-right: 6px;
+}
+
+.book-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 18px;
+
+  background: var(--app-surface);
+
+  border: 1px solid var(--app-border);
+
+  border-radius: 14px;
+
+  transition: 0.25s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  }
+}
+
+.book-info {
+  h4 {
+    margin: 0;
+    color: var(--app-text);
+  }
+
+  p {
+    margin: 6px 0;
+    color: var(--app-text-muted);
+  }
+
+  .isbn {
+    font-size: 13px;
+    color: var(--app-text-muted);
+  }
+}
+
+.book-meta {
+  text-align: right;
+
+  .price {
+    display: block;
+
+    font-size: 18px;
+    font-weight: 700;
+
+    color: var(--app-primary);
+  }
+
+  small {
+    color: var(--app-text-muted);
+  }
+}
+
+/* ==============================
+        EMPTY STATE
+================================ */
+
+.empty-state {
+  text-align: center;
+
+  padding: 60px 20px;
+
+  border: 2px dashed var(--app-border);
+
+  border-radius: 14px;
+
+  mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+
+    color: var(--app-primary);
+  }
+
+  h4 {
+    margin: 18px 0 8px;
+    color: var(--app-text);
+  }
+
+  p {
+    margin: 0;
+    color: var(--app-text-muted);
+  }
+}
+
+/* ==============================
+            FOOTER
+================================ */
+
+.actions {
+  flex-shrink: 0;
+
+  display: flex;
+  justify-content: flex-end;
+
+  padding: 12px 28px;
+
+  border-top: 1px solid var(--app-border);
+
+  background: var(--app-card-bg);
+}
+
+/* ==============================
+          SCROLLBAR
+================================ */
+
+.dialog-content::-webkit-scrollbar,
+.books-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.dialog-content::-webkit-scrollbar-thumb,
+.books-list::-webkit-scrollbar-thumb {
+  background: var(--app-border);
+  border-radius: 999px;
+}
+
+.dialog-content::-webkit-scrollbar-thumb:hover,
+.books-list::-webkit-scrollbar-thumb:hover {
+  background: var(--app-primary);
+}
+
+/* ==============================
+          RESPONSIVE
+================================ */
+
+@media (max-width: 700px) {
+  .dialog-container {
+    width: 100%;
+    height: 90vh;
+  }
+
+  .header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .details {
+    grid-template-columns: 1fr;
+  }
+
+  .book-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .book-meta {
+    text-align: left;
+  }
+}
