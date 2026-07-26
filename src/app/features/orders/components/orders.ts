@@ -13,6 +13,7 @@ import { BooksService } from '../../../core/services/books.service';
 import { StorageService } from '../../../core/services/storage.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { OrderStatusEnum } from '../../../shared/enums/OrderStatusEnum';
+import { ViewOrder } from './view-order/view-order';
 
 @Component({
   selector: 'app-orders',
@@ -44,11 +45,11 @@ export class Orders {
   ];
 
   protected readonly actions: TableAction<IOrderResponse>[] = [
-    // {
-    //   icon: 'visibility',
-    //   label: 'View',
-    //   handler: (user) => this.viewUserDetails(user),
-    // },
+    {
+      icon: 'visibility',
+      label: 'View',
+      handler: (order) => this.viewOrderDetails(order),
+    },
     {
       icon: 'cancel',
       label: 'Cancel',
@@ -131,15 +132,14 @@ export class Orders {
     });
   }
 
-  // viewUserDetails(user: IUserResponse): void {
-  //   this.dialog.open(ViewUser, {
-  //     data: user,
-  //     maxWidth: '750px',
-  //     maxHeight: '85vh',
-  //     // panelClass: 'user-dialog',
-  //     autoFocus: false,
-  //   });
-  // }
+  viewOrderDetails(order: IOrderResponse): void {
+    this.dialog.open(ViewOrder, {
+      data: order,
+      maxWidth: '750px',
+      maxHeight: '85vh',
+      autoFocus: false,
+    });
+  }
 
   private loadAllBooks(): void {
     this.booksService.getAllBooks().subscribe({

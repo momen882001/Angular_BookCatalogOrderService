@@ -1,3 +1,4 @@
+import { UserRoleEnum } from './../../../shared/enums/UserRoleEnum';
 import { Component, computed, OnInit, signal } from '@angular/core';
 import { PageEvent } from '@angular/material/paginator';
 import {
@@ -10,6 +11,7 @@ import { IBookRequest, IBookResponse } from '../interfaces/BookInterface';
 import { ViewBook } from './view-book/view-book';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddEditBook } from './add-edit-book/add-edit-book';
+import { AuthService } from '../../../core/services/auth.service';
 
 @Component({
   selector: 'app-books',
@@ -20,6 +22,12 @@ import { AddEditBook } from './add-edit-book/add-edit-book';
 export class Books implements OnInit {
   private allBooks = signal<IBookResponse[]>([]);
   private searchTerm = signal('');
+
+  constructor(
+    private booksService: BooksService,
+    public dialog: MatDialog,
+    private authService: AuthService,
+  ) {}
 
   protected readonly columns: TableColumn[] = [
     { key: 'title', header: 'Title' },
@@ -44,6 +52,7 @@ export class Books implements OnInit {
       icon: 'edit',
       label: 'Edit',
       handler: (book) => this.editBook(book),
+      visible: () => this.isUserAdmin(),
     },
     // {
     //   icon: 'delete',
@@ -51,11 +60,6 @@ export class Books implements OnInit {
     //   handler: (book) => console.log('Delete book', book),
     // },
   ];
-
-  constructor(
-    private booksService: BooksService,
-    public dialog: MatDialog,
-  ) {}
 
   ngOnInit(): void {
     this.loadAllBooks();
@@ -88,6 +92,10 @@ export class Books implements OnInit {
 
   onSearch(event: TableSearchEvent): void {
     this.searchTerm.set(event.searchValue);
+  }
+
+  isUserAdmin(): boolean {
+    return this.authService.getUserData?.role === UserRoleEnum.ADMIN;
   }
 
   viewBookDetails(book: IBookResponse): void {

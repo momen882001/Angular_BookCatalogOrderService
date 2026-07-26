@@ -1,1 +1,115 @@
-<p>view-order works!</p>
+<div class="dialog-container">
+  <!-- HEADER -->
+
+  <header class="header">
+    <div class="icon-box">
+      <mat-icon> receipt_long </mat-icon>
+    </div>
+
+    <div class="header-info">
+      <h2>Order #{{ data.id }}</h2>
+
+      <p>
+        Created
+        {{ data.createdAt | date: 'medium' }}
+      </p>
+
+      <mat-chip class="status-chip" [ngClass]="data.status.toLowerCase()">
+        {{ data.status }}
+      </mat-chip>
+    </div>
+  </header>
+
+  <mat-divider></mat-divider>
+
+  <!-- CONTENT -->
+
+  <div class="content">
+    <!-- SUMMARY -->
+
+    <section class="summary">
+      <div class="summary-card">
+        <mat-icon> shopping_bag </mat-icon>
+
+        <div>
+          <span> Items </span>
+
+          <strong>
+            {{ itemsCount }}
+          </strong>
+        </div>
+      </div>
+
+      <div class="summary-card total">
+        <mat-icon> payments </mat-icon>
+
+        <div>
+          <span> Total Amount </span>
+
+          <strong> ${{ data.totalAmount | number: '1.2-2' }} </strong>
+        </div>
+      </div>
+    </section>
+
+    <!-- ORDER ITEMS -->
+
+    <section class="items-section">
+      <h3>Order Items</h3>
+
+      <div class="items-list">
+        @for (item of data.orderItems; track item.id) {
+          <div class="item-card">
+            <div class="book-info">
+              <div class="book-icon">
+                <mat-icon> menu_book </mat-icon>
+              </div>
+
+              <div>
+                <h4>
+                  {{ item.book.title }}
+                </h4>
+
+                <p>
+                  {{ item.book.author }}
+                </p>
+
+                <small>
+                  ISBN:
+                  {{ item.book.isbn }}
+                </small>
+              </div>
+            </div>
+
+            <div class="price-info">
+              <div>
+                <span> Quantity </span>
+
+                <strong>
+                  {{ item.quantity }}
+                </strong>
+              </div>
+
+              <div>
+                <span> Unit Price </span>
+
+                <strong> ${{ item.unitPrice | number: '1.2-2' }} </strong>
+              </div>
+
+              <div class="subtotal">
+                <span> Subtotal </span>
+
+                <strong> ${{ item.subTotal | number: '1.2-2' }} </strong>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    </section>
+  </div>
+
+  <!-- FOOTER -->
+
+  <footer class="actions">
+    <button mat-flat-button color="primary" (click)="close()">Close</button>
+  </footer>
+</div>

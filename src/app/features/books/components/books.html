@@ -4,11 +4,13 @@
       <h1 class="page-title">Books</h1>
     </div>
 
-    <button class="create-book-btn" type="button" (click)="openAddBook()">
-      <i class="bi bi-plus-lg"></i>
+    @if (isUserAdmin()) {
+      <button class="create-book-btn" type="button" (click)="openAddBook()">
+        <i class="bi bi-plus-lg"></i>
 
-      <span> Add Book </span>
-    </button>
+        <span> Add Book </span>
+      </button>
+    }
   </header>
 
   <app-generic-table
