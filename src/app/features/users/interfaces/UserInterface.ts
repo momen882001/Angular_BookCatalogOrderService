@@ -1,3 +1,4 @@
+import { UserRoleEnum } from '../../../shared/enums/UserRoleEnum';
 import { IBookResponse } from '../../books/interfaces/BookInterface';
 
 export interface IUserResponse {
@@ -7,5 +8,5 @@ export interface IUserResponse {
   createdAt: string;
   books: IBookResponse[] | null;
   username: string;
-  role: string;
+  role: UserRoleEnum;
 }

@@ -9,4 +9,7 @@ export const URLs = {
   getAllBooks: 'book',
   createBook: 'book',
   updateBook: 'book/:id',
+
+  // users
+  getAllUsers: 'user',
 };

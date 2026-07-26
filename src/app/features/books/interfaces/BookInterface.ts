@@ -1,4 +1,4 @@
-import { IUserResponse } from '../../users/components/UserInterface';
+import { IUserResponse } from '../../users/interfaces/UserInterface';
 
 export interface IBookRequest {
   title: string;
