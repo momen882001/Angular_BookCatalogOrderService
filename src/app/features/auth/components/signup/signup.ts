@@ -16,6 +16,8 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../../core/services/auth.service';
 import { UserRoleEnum } from '../../../../shared/enums/UserRoleEnum';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { SuccessMessages } from '../../../../core/constants/successMessages';
 
 const NAME_PATTERN = /^[a-zA-Z\s'-]+$/;
 const USERNAME_PATTERN = /^[a-zA-Z0-9._-]+$/;
@@ -64,6 +66,7 @@ export class Signup implements OnInit {
     private readonly fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -139,6 +142,7 @@ export class Signup implements OnInit {
           console.log(res);
           if (res) {
             this.router.navigate(['/auth/login']);
+            this.notificationService.success(SuccessMessages.userCreated);
           }
         },
         error: (err) => {

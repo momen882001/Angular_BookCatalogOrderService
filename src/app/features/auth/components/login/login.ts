@@ -14,6 +14,9 @@ import { MatInputModule } from '@angular/material/input';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { AuthService } from '../../../../core/services/auth.service';
 import { StorageService } from '../../../../core/services/storage.service';
+import { ToastrService } from 'ngx-toastr';
+import { NotificationService } from '../../../../core/services/notification.service';
+import { SuccessMessages } from '../../../../core/constants/successMessages';
 
 @Component({
   selector: 'app-login',
@@ -43,6 +46,7 @@ export class Login implements OnInit {
     private router: Router,
     private activatedRoute: ActivatedRoute,
     private storageService: StorageService,
+    private notification: NotificationService,
   ) {}
 
   ngOnInit(): void {
@@ -94,6 +98,7 @@ export class Login implements OnInit {
       next: (res) => {
         console.log(res);
         if (res) {
+          this.notification.success(SuccessMessages.login);
           this.storageService.setItem('userData', res);
           this.router.navigateByUrl(this.returnUrl);
         }
@@ -101,7 +106,7 @@ export class Login implements OnInit {
       error: (err) => {
         console.log('err', err);
 
-        this.formError.set('Invalid username or password.');
+        // this.formError.set('Invalid username or password.');
       },
     });
   }

@@ -12,6 +12,8 @@ import { ViewBook } from './view-book/view-book';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { AddEditBook } from './add-edit-book/add-edit-book';
 import { AuthService } from '../../../core/services/auth.service';
+import { NotificationService } from '../../../core/services/notification.service';
+import { SuccessMessages } from '../../../core/constants/successMessages';
 
 @Component({
   selector: 'app-books',
@@ -27,6 +29,7 @@ export class Books implements OnInit {
     private booksService: BooksService,
     public dialog: MatDialog,
     private authService: AuthService,
+    private notificationService: NotificationService,
   ) {}
 
   protected readonly columns: TableColumn[] = [
@@ -121,6 +124,7 @@ export class Books implements OnInit {
         this.booksService.createBook(result).subscribe({
           next: (res) => {
             console.log(res, 'create book res');
+            this.notificationService.success(SuccessMessages.bookCreated);
           },
           error: (err: any) => {
             console.log(err);
@@ -151,6 +155,7 @@ export class Books implements OnInit {
         this.booksService.updateBook(bookReqData, book.id).subscribe({
           next: (res) => {
             console.log(res, 'update book res');
+            this.notificationService.success(SuccessMessages.bookUpdated);
           },
           error: (err: any) => {
             console.log(err);

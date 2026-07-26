@@ -9,6 +9,8 @@ import {
   IRegisterRequest,
 } from '../../features/auth/interfaces/AuthInterface';
 import { UserRoleEnum } from '../../shared/enums/UserRoleEnum';
+import { NotificationService } from './notification.service';
+import { SuccessMessages } from '../constants/successMessages';
 
 @Injectable({
   providedIn: 'root',

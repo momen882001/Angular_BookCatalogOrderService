@@ -14,6 +14,8 @@ import { StorageService } from '../../../core/services/storage.service';
 import { AuthService } from '../../../core/services/auth.service';
 import { OrderStatusEnum } from '../../../shared/enums/OrderStatusEnum';
 import { ViewOrder } from './view-order/view-order';
+import { NotificationService } from '../../../core/services/notification.service';
+import { SuccessMessages } from '../../../core/constants/successMessages';
 
 @Component({
   selector: 'app-orders',
@@ -31,6 +33,7 @@ export class Orders {
     public dialog: MatDialog,
     private booksService: BooksService,
     private authService: AuthService,
+    private notificationService: NotificationService,
   ) {}
 
   protected readonly columns: TableColumn[] = [
@@ -106,6 +109,7 @@ export class Orders {
         this.ordersService.placeOrder(orderReq).subscribe({
           next: (res) => {
             console.log(res);
+            this.notificationService.success(SuccessMessages.orderPlaced);
           },
           error: (err) => {
             console.log(err);
@@ -122,6 +126,7 @@ export class Orders {
     this.ordersService.cancelOrder(order.id).subscribe({
       next: (res) => {
         console.log(res);
+        this.notificationService.success(SuccessMessages.orderCancelled);
       },
       error: (err) => {
         console.log(err);

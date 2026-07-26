@@ -4,6 +4,8 @@ import { StorageService } from '../../core/services/storage.service';
 import { ILoginResponse } from '../../features/auth/interfaces/AuthInterface';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserRoleEnum } from '../../shared/enums/UserRoleEnum';
+import { NotificationService } from '../../core/services/notification.service';
+import { SuccessMessages } from '../../core/constants/successMessages';
 
 @Component({
   selector: 'app-sidebar',
@@ -16,6 +18,7 @@ export class Sidebar {
     private renderer: Renderer2,
     private authservice: AuthService,
     private storageService: StorageService,
+    private notificationService: NotificationService,
   ) {}
 
   ngOnInit(): void {}
@@ -42,5 +45,6 @@ export class Sidebar {
 
   logout(): void {
     this.authservice.logout();
+    this.notificationService.success(SuccessMessages.logout);
   }
 }
