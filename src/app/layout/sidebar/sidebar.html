@@ -11,7 +11,15 @@
     <div class="brand-info">
       <h2>Book Store</h2>
 
-      <span>{{ getUsername() }}</span>
+      <div class="user-info">
+        <span class="username">
+          {{ getUsername() }}
+        </span>
+
+        <span class="role-badge" [ngClass]="getUserRole()?.toLowerCase()">
+          {{ getDashboardTitleDependsRole() }}
+        </span>
+      </div>
     </div>
   </div>
 

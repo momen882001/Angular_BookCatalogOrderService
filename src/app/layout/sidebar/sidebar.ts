@@ -6,10 +6,11 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { UserRoleEnum } from '../../shared/enums/UserRoleEnum';
 import { NotificationService } from '../../core/services/notification.service';
 import { SuccessMessages } from '../../core/constants/successMessages';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
-  imports: [RouterLink, RouterLinkActive],
+  imports: [RouterLink, RouterLinkActive, CommonModule],
   templateUrl: './sidebar.html',
   styleUrl: './sidebar.scss',
 })
@@ -17,7 +18,6 @@ export class Sidebar {
   constructor(
     private renderer: Renderer2,
     private authservice: AuthService,
-    private storageService: StorageService,
     private notificationService: NotificationService,
   ) {}
 
@@ -28,8 +28,16 @@ export class Sidebar {
   }
 
   getUsername(): string {
-    const userData = this.storageService.getItem<ILoginResponse>('userData');
+    const userData = this.authservice.getUserData;
     return userData?.firstname + ' ' + userData?.lastname || 'Admin Dashboard';
+  }
+
+  getUserRole(): string {
+    return this.authservice.getUserData?.role as UserRoleEnum;
+  }
+
+  getDashboardTitleDependsRole(): string {
+    return this.isUserAdmin() ? 'Administrator' : 'Customer';
   }
 
   toggleSidebar(): void {
