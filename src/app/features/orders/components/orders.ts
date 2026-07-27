@@ -37,6 +37,11 @@ export class Orders {
   ) {}
 
   protected readonly columns: TableColumn[] = [
+    {
+      key: 'createdBy',
+      header: 'Created By',
+      pipe: (createdBy: any) => createdBy.firstname + ' ' + createdBy.lastname,
+    },
     { key: 'status', header: 'Status' },
     {
       key: 'orderItems',
