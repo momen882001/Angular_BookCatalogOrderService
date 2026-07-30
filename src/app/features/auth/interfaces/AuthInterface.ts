@@ -6,6 +6,7 @@ export interface IRegisterRequest {
   username: string;
   password: string;
   role: UserRoleEnum;
+  email: string;
 }
 
 export interface ILoginRequest {
@@ -20,4 +21,5 @@ export interface ILoginResponse {
   lastname: string;
   username: string;
   role: UserRoleEnum;
+  email: string;
 }

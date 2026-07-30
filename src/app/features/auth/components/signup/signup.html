@@ -71,6 +71,20 @@
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="signup-form__field w-full">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            formControlName="email"
+            autocomplete="email"
+            [attr.aria-invalid]="!!emailError()"
+          />
+          <mat-icon matPrefix>email</mat-icon>
+          @if (emailError(); as message) {
+            <mat-error>{{ message }}</mat-error>
+          }
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="signup-form__field w-full">
           <mat-label>Password</mat-label>
           <input
             matInput

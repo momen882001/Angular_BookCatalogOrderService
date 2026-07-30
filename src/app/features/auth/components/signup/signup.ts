@@ -106,6 +106,7 @@ export class Signup implements OnInit {
           Validators.pattern(USERNAME_PATTERN),
         ],
       ],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(100)]],
       confirmPassword: ['', [Validators.required, passwordsMatchValidator()]],
     });
@@ -133,10 +134,10 @@ export class Signup implements OnInit {
       return;
     }
 
-    const { firstname, lastname, username, password } = this.signupForm.getRawValue();
+    const { firstname, lastname, username, password, email } = this.signupForm.getRawValue();
 
     this.authService
-      .signUp({ firstname, lastname, username, password, role: UserRoleEnum.CUSTOMER })
+      .signUp({ firstname, lastname, username, password, role: UserRoleEnum.CUSTOMER, email })
       .subscribe({
         next: (res) => {
           console.log(res);
@@ -200,6 +201,20 @@ export class Signup implements OnInit {
     }
     if (control.errors['pattern']) {
       return 'Username can only contain letters, numbers, dots, underscores, and hyphens';
+    }
+    return null;
+  }
+
+  protected emailError(): string | null {
+    const control = this.signupForm.get('email');
+    if (!this.shouldShowErrors('email') || !control?.errors) {
+      return null;
+    }
+    if (control.errors['required']) {
+      return 'Email is required';
+    }
+    if (control.errors['email']) {
+      return 'Please enter a valid email (example: name@example.com)';
     }
     return null;
   }
