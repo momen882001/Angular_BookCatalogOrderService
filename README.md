@@ -4,8 +4,6 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-6.0.2-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-4.3.3-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white)](https://tailwindcss.com/)
 [![Angular Material](https://img.shields.io/badge/Angular_Material-22.0.6-3F51B5?style=for-the-badge&logo=angular&logoColor=white)](https://material.angular.dev/)
-[![Vitest](https://img.shields.io/badge/Vitest-4.0.8-6E9F18?style=for-the-badge&logo=vitest&logoColor=white)](https://vitest.dev/)
-[![License](https://img.shields.io/badge/License-MIT-blue.svg?style=for-the-badge)](LICENSE)
 
 An enterprise-grade, modern **Book Catalog & Order Management System** built with **Angular 22**, standalone architecture, Angular Signals for fine-grained reactivity, Angular Material 3 design tokens, Tailwind CSS 4, and robust Role-Based Access Control (RBAC).
 
